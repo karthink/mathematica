@@ -7,18 +7,15 @@ Menu["Mathematica",
                 (*	MenuItem["&Notebook (.nb)", "New", MenuKey["n", Modifiers->{"Control"}]],*)
 			MenuItem["&Notebook (.nb)", "New", MenuKey["N", Modifiers->{"Control","Shift","Command"}]],
 
-			MenuItem["St&yled Notebook...", FrontEndExecute[{FrontEnd`NotebookOpen[FrontEnd`FindFileOnPath["StylesheetChooser.nb", "PalettePath"]]}]],
-			MenuItem["Pre&senter Notebook...", FrontEndExecute[{FrontEnd`NotebookOpen[FrontEnd`FindFileOnPath["PresenterNotebookChooser.nb", "PalettePath"]]}]],
-			Delimiter,
+			MenuItem["&Slide Show...", FrontEndExecute[{FrontEnd`NotebookOpen[FrontEnd`FindFileOnPath["SlideShowChooser.nb", "PalettePath"]]}]],
 			MenuItem["Te&mplate Notebook", KernelExecute[NotebookTemplating`CreateTemplateNotebook[]], MenuEvaluator->"System", Method -> "Queued"],
 			MenuItem["Testing Notebook", KernelExecute[Block[{$ContextPath}, Needs["MUnit`"]; MUnit`PaletteNewTestNotebook[]]], MenuEvaluator->"System"],
-			MenuItem["Data &Resource", KernelExecute[CreateNotebook["DataResource"]], MenuEvaluator -> Automatic, Method -> "Queued"],
 			MenuItem["&Demonstration", KernelExecute[FrontEnd`Private`PutDemonstrationsTemplate[]], MenuEvaluator -> "System", Scope->SelectionCell],
 			Delimiter,
+			MenuItem["St&yled Notebook...", FrontEndExecute[{FrontEnd`NotebookOpen[FrontEnd`FindFileOnPath["StylesheetChooser.nb", "PalettePath"]]}]],
+			Delimiter,
 			MenuItem["&Package (.wl)", "NewPackage"],
-			MenuItem["S&cript (.wls)", "NewScript"],
-			MenuItem["&Text File (.txt)", "NewText"],
-			MenuItem["C&hat", "NewChat"]
+			MenuItem["&Text File (.txt)", "NewText"]
 		}],
 (* DANGEROUS *)                
 (*		MenuItem["Open", "MenuListOpenItems", MenuAnchor->True],*)
@@ -34,7 +31,15 @@ Menu["Mathematica",
 		MenuItem["Save Se&lection As...", "SelectionSaveSpecial", RemoveMask->{"NoLocalFileAccess"}],
 		MenuItem["Re&vert...", "Revert"],
 		Delimiter,
-		MenuItem["CD&F Preview", "CDFPreview", RemoveMask->{"NoLocalFileAccess"}],
+		Menu["CD&F Preview",
+		{
+			MenuItem["Preview", "MenuListCDFPreview", MenuAnchor->True]
+		}, RemoveMask->{"NoLocalFileAccess"}],
+		Menu["C&DF Export",
+		{
+			MenuItem["&Web Embeddable...", "DeployEmbedded"],
+			MenuItem["&Standalone...", "DeployStandalone"]
+		}, RemoveMask->{"NoLocalFileAccess"}],
 		Delimiter,
 		MenuItem["&Install...", FrontEndExecute[{FrontEnd`NotebookOpen[
 			FrontEnd`FindFileOnPath["InstallDialog.nb", "PrivatePathsSystemResources"]]}], RemoveMask->{"NoLocalFileAccess"}],
@@ -53,7 +58,8 @@ Menu["Mathematica",
 				MenuItem["Styles", "MenuListPrintingStyleEnvironments", MenuAnchor->True]
 			}]
 		}],
-(*		MenuItem["&Print...", "PrintDialog", MenuKey["p", Modifiers->{"Control"}]],*)
+(*              MenuItem["&Print...", "PrintDialog", MenuKey["p", Modifiers->{"Control"}]], *)
+		MenuItem["&Print...", "PrintDialog"],
 		MenuItem["Print Previe&w...", "PrintPreviewDialog"],
 		Delimiter,
 		MenuItem["First Favorite File", "MenuListNotebooksMenu", MenuAnchor->True],
@@ -82,9 +88,7 @@ Menu["Mathematica",
 				KernelExecute[ToExpression["FrontEnd`CopyAsMathML[]"]],
 				MenuEvaluator -> "System"],
 			Delimiter,
-			MenuItem["Cell &Object", FrontEnd`CopySpecial["CellObject"]],
 			MenuItem["&Cell Expression", FrontEnd`CopySpecial["CellExpression"]],
-			MenuItem["Notebook Ob&ject", FrontEnd`CopySpecial["NotebookObject"]],
 			MenuItem["&Notebook Expression", FrontEnd`CopySpecial["NotebookExpression"]],
 			Delimiter,
 			MenuItem["&Bitmap", FrontEnd`CopySpecial["MGF"]],
@@ -623,7 +627,6 @@ Menu["Mathematica",
 		Delimiter,
 		MenuItem["Handwriting Input", "HandwritingInput"],
 		MenuItem["Wolfram Cloud Activity Monitor", "WolframCloudActivityMonitor"],
-		MenuItem["Chat Settings", "ChatServicesMonitor"],
 		Delimiter,
 		Menu["Arrange Windows",
 		{
